@@ -1,0 +1,16 @@
+var SerialPort = require('serialport').SerialPort;
+//var count = 0;
+
+var port = new SerialPort('/dev/ttyUSB0', {
+  baudrate: 4800
+});
+
+port.on('open', function (){
+  console.log('open');
+  port.on('data', function(data) {
+//    if (count % 100 == 0) {
+      console.log('data received: ' + data.toString('hex'));
+//    }    
+    count++;
+  })
+});

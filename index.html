@@ -1,0 +1,151 @@
+<!doctype html>
+  <head>
+    <script type="text/javascript"
+          src="https://www.google.com/jsapi?autoload={
+            'modules':[{
+              'name':'visualization',
+              'version':'1.1',
+              'packages':['corechart']
+            }]
+          }"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="jquery.csv-0.71.min.js"></script>
+    <script type="text/javascript">
+      var data, chart, options;
+      google.setOnLoadCallback(drawChart);
+      
+      function drawChart() {
+        $.get("data", function(csvString) {
+          // transform the CSV string into a 2-dimensional array
+          var arrayData = $.csv.toArrays(csvString);
+          for (var n = 0; n < arrayData.length; n++) {
+            var line = arrayData[n];
+            var times1 = line[0];
+            line[0] = new Date(times1 * 1000);
+          }
+          arrayData.unshift([
+            {label: 'Time', id: 'time', type: 'datetime'},
+            {label: 'Roof', id: 'roof', type: 'number'},
+            {label: 'Tank', id: 'tank', type: 'number'},
+            {label: 'Inlet', id: 'inlet', type: 'number'},
+            {label: 'Solar', id: 'solar', type: 'number'},
+            {label: 'Backup', id: 'backup', type: 'number'}
+          ]);
+          // this new DataTable object holds all the data
+          data = new google.visualization.arrayToDataTable(arrayData);
+          // this view can select a subset of the data at a time
+          var view = new google.visualization.DataView(data);
+          //view.setColumns([0,1,2,3]);
+
+
+          //var view1 = new google.visualization.DataView(data);
+          //view1.setColumns([0,4,5]);
+          
+          var now = new Date();
+          var minVal = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+          var maxVal = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+          
+          options = {
+            title: "Solastat data",
+            hAxis: {title: 'time (s)', minValue: minVal, maxValue: maxVal},
+            vAxes: [{
+              title: 'temperature (\u2103)',
+              minValue: 0,
+              maxValue: 100
+            }, {
+              minValue: 0,
+              maxValue: 1
+            }],
+//            vAxis: {title: 'temperature', minValue: 0, maxValue: 100},
+//            curveType: 'function',
+            legend: { position: 'bottom' },
+            interpolateNulls: false,
+            lineWidth: 1,
+            pointSize: 0,
+//            explorer: {},
+            seriesType: 'line',
+            series: [
+              {color: 'red', targetAxisIndex: 0},
+              {color: 'green', targetAxisIndex: 0},
+              {color: 'blue', targetAxisIndex: 0},
+              {type: 'area', lineWidth: 0, targetAxisIndex: 1},
+              {type: 'area', lineWidth: 0, targetAxisIndex: 1}
+            ]
+          };
+          chart = new google.visualization.ComboChart(document.getElementById('chart'));
+//          chart = new google.charts.Scatter(document.getElementById('chart'));
+          chart.draw(view, options);
+
+//          chart1 = new google.visualization.ComboChart(document.getElementById('chart1'));
+//          chart = new google.charts.Scatter(document.getElementById('chart'));
+//          chart1.draw(view1, options);
+
+      
+//        data = google.visualization.arrayToDataTable([
+//          ['Year', 'Roof', 'Tank', 'Inlet'],
+//          [2000, 10, 10, 10]
+//        ]);
+        
+//        year = 2000;
+
+//        options = {
+//          title: 'Temperature',
+//          hAxis: { title: 'X', minValue: 2000, maxValue: 3000 },
+//          vAxis: { title: 'Y', minValue: 0, maxValue: 100 },
+//          curveType: 'function',
+//          legend: { position: 'bottom' },
+//          interpolateNulls: true,
+//          lineWidth: 1,
+//          pointSize: 0,
+//          series: [
+//            {color: 'red'},
+//            {color: 'green'},
+//            {color: 'blue'}
+//          ]
+//        };
+
+//        chart = new google.visualization.ScatterChart(document.getElementById('curve_chart'));
+
+//        chart.draw(data, options);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Solastat</h1>
+    <p>Roof: <span id="roof"></span>&#x2103;</p>
+    <p>Tank: <span id="tank"></span>&#x2103;</p>
+    <p>Inlet: <span id="inlet"></span>&#x2103;</p>
+    <p>Solar: <span id="solar"></span></p>
+    <p>Pump: <span id="pump"></span></p>
+    <p>Backup: <span id="backup"></span></p>
+    <div id="chart" style="width: 900px; height: 500px"></div>
+
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('state', function(state){
+        $('#roof').html(state.roof);
+        $('#tank').html(state.tank);
+        $('#inlet').html(state.inlet);
+        $('#solar').html(state.solar);
+        $('#pump').html(state.pump);
+        $('#backup').html(state.backup);
+//        data.addRow([year++, state.roof, state.tank, state.inlet]);
+//        chart.draw(data, options);
+      });
+      socket.on('chart', function(csvString){
+        var newData = $.csv.toArray(csvString);
+        var times1 = newData[0];
+        newData[0] = new Date(times1 * 1000);
+        for (var n = 1; n < newData.length; n++) {
+          newData[n] = parseInt(newData[n]);
+        }
+        console.log(newData);
+        data.addRow(newData);
+        chart.draw(data, options);
+      });
+    </script>
+  </body>
+</html>
