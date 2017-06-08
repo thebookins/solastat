@@ -1,0 +1,27 @@
+{
+  "name": "solastat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jquery.csv-0.71.min.js",
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "lcd": "^1.1.4",
+    "serialport": "^4.0.7",
+    "socket.io": "^2.0.2",
+    "tiny-router": "^0.1.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thebookins/solastat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thebookins/solastat/issues"
+  },
+  "homepage": "https://github.com/thebookins/solastat#readme"
+}

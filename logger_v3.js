@@ -169,17 +169,17 @@ function writeResults(fd) {
       io.emit('chart', csvString);
         
 
-     var emoncmsUrl = "http://localhost/emoncms/input/post?node=1&json={roof:" + state.roof + ",tank:" + state.tank + ",inlet:" + state.inlet +",testBool:true}&apikey=2c6c3e684c9c16b84ba259d6f6b448d7";
-
-     http1.get(emoncmsUrl, function(res) {
-
-        console.log("Got response: " + res.statusCode);
-        // consume response body
-        res.resume();
-      }).on('error', function(e) {
-        console.log("Got error: " + e.message);
-
-      });
+//     var emoncmsUrl = "http://localhost/emoncms/input/post?node=1&json={roof:" + state.roof + ",tank:" + state.tank + ",inlet:" + state.inlet +",testBool:true}&apikey=2c6c3e684c9c16b84ba259d6f6b448d7";
+//
+//     http1.get(emoncmsUrl, function(res) {
+//
+//        console.log("Got response: " + res.statusCode);
+//        // consume response body
+//        res.resume();
+//      }).on('error', function(e) {
+//        console.log("Got error: " + e.message);
+//
+//      });
 
     }
     nextTimeStampSeconds++;
