@@ -83,7 +83,7 @@ function writeResults() {
       // should really be averaging state before posting ???
       // set content-type header and data as json in args parameter
       var args = {
-          data: state.json(),
+          data: state,
           headers: { "Content-Type": "application/json" }
       };
 
