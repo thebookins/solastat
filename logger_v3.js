@@ -1,8 +1,8 @@
 /*
   Simple example that takes a command line provided serial port destination and routes the output to a file of the same name with .log appended to the port name.
-  
+
   usage: node logger.js /dev/ttyUSB0
-  
+
 */
 
 var $ = jQuery = require('jquery');
@@ -11,6 +11,11 @@ require('./jquery.csv-0.71.min.js');
 var app = require('tiny-router');
 var http = app.listen(3000);
 var io = require('socket.io')(http);
+var socket = require('socket.io-client')(process.argv[3]);
+
+socket.on('connect', function(){});
+socket.on('event', function(data){});
+socket.on('disconnect', function(){});
 
 var http1 = require('http');
 
@@ -30,7 +35,7 @@ var lastDay = Date.now();
 // demo code for writing current time to 8 x 1 LCD (from https://www.npmjs.com/package/lcd)
 var Lcd = require('lcd'),
   lcd = new Lcd({rs: 7, e: 8, data: [25, 24, 23, 18], cols: 16, rows: 2});
- 
+
 lcd.on('ready', function () {
   setInterval(function () {
     lcd.setCursor(0, 0);
@@ -163,11 +168,12 @@ function writeResults(fd) {
     state.backup = data[7];
     state.pump += ((state.solar == 2) || (state.pump == 3));
     io.emit('state', state);
+    socket.emit('state', state);
     if ((nowSeconds % 10) == 0) {
       var csvString = nowSeconds + ',' + state.roof + ',' + state.tank + ',' + state.inlet + ',' + state.solar + ',' + state.backup + '\n';
       fs.write(fd, csvString);
       io.emit('chart', csvString);
-        
+
 
      var emoncmsUrl = "http://localhost/emoncms/input/post?node=1&json={roof:" + state.roof + ",tank:" + state.tank + ",inlet:" + state.inlet +",testBool:true}&apikey=2c6c3e684c9c16b84ba259d6f6b448d7";
 
@@ -198,7 +204,7 @@ if (!port) {
     setInterval(function () {
       if (!active) {
         try {
-          attemptLogging(fd, port, baudrate);  
+          attemptLogging(fd, port, baudrate);
         } catch (e) {
           // Error means port is not available for listening.
           console.log(e);
