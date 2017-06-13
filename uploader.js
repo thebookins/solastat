@@ -166,7 +166,7 @@ function writeResults() {
     state.solar = data[6];
     state.backup = data[7];
     state.pump += ((state.solar == 2) || (state.pump == 3));
-    io.emit('state', state);
+//    io.emit('state', state);
     socket.emit('state', state);
     if ((nowSeconds % 60) == 0) {
 //      var csvString = nowSeconds + ',' + state.roof + ',' + state.tank + ',' + state.inlet + ',' + state.solar + ',' + state.backup + '\n';
