@@ -153,7 +153,6 @@ function writeResults() {
   // consider whether to use this time (corrected for daylight savings) or ‘solar’ time
     var day = new Date(nowSeconds*1000);
     day.setHours(0,0,0,0);
-    var day = date.getDate();
     // if (day > lastDay) {
     //   // clear contents of file if it's a new day
     //   console.log(day + " is greater than " + lastDay + ", truncating.");
