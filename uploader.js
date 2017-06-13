@@ -86,10 +86,8 @@ function writeResults() {
       };
 
       client.post(remoteUrl + '/api/entries', args, function (data, response) {
-          // parsed response body as js object
-          console.log(data);
-          // raw response
-          console.log(response);
+        // TODO: check if the post was successful?
+        // not sure what to do if not
       });
     }
     nextTimeStampSeconds++;
