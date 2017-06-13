@@ -65,10 +65,8 @@ function writeResults() {
   var nowSeconds = Math.floor(Date.now()/1000);
   if (nextTimeStampSeconds == 0) nextTimeStampSeconds = nowSeconds;
   if (nowSeconds >= nextTimeStampSeconds) {
-    var day = new Date(nowSeconds*1000);
-    day.setHours(0,0,0,0);
     var state = {
-      timestamp: day,
+      timestamp: new Date(nowSeconds*1000),
       status: {
         roof: data[0] + (data[1] << 4) - 50,
         tank: data[2] + (data[3] << 4) - 50,
