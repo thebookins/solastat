@@ -8,6 +8,12 @@
 */
 var remoteUrl = process.argv[3]
 
+var socket = require('socket.io-client')(remoteUrl);
+
+socket.on('connect', function(){});
+socket.on('event', function(data){});
+socket.on('disconnect', function(){});
+
 var Client = require('node-rest-client').Client;
 var client = new Client();
 
@@ -72,7 +78,7 @@ function writeResults() {
       }
     }
 //    state.pump += ((state.solar == 2) || (state.pump == 3));
-    // socket.emit('state', state);
+    socket.emit('state', state);
     if ((nowSeconds % 60) == 0) {
       // should really be averaging state before posting ???
       // or post events to remote url in addition to temperature?
