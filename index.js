@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
   Simple example that takes a command line provided serial port destination and routes the output to a file of the same name with .log appended to the port name.
 
