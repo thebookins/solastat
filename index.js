@@ -49,6 +49,12 @@ function attemptLogging(port, baudrate) {
       console.log('closing serial port');
       active = false;
     });
+
+    serialPort.on('error', function (err) {
+      console.error('Hmm..., error!');
+      console.error(err);
+      process.exit(1);
+    });
   }
 }
 
