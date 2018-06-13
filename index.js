@@ -33,7 +33,7 @@ var nextTimeStampSeconds = 0;
 
 function attemptLogging(port, baudrate) {
   if (!active) {
-    var serialPort = new SerialPort.SerialPort(port, {
+    var serialPort = new SerialPort(port, {
       baudrate: baudrate
     });
 
