@@ -46,6 +46,7 @@ function attemptLogging(port, baudrate) {
       }
     });
     serialPort.on("close", function (data) {
+      console.log('closing serial port');
       active = false;
     });
   }
@@ -110,7 +111,7 @@ if (!port) {
         attemptLogging(port, baudrate);
       } catch (e) {
         // Error means port is not available for listening.
-        console.log(e);
+        console.log('in error handler: ' + e);
         active = false;
       }
     }
