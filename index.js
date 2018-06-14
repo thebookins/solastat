@@ -46,14 +46,12 @@ port.on("data", function (data) {
   for (var i = 0; i < data.length; i++) {
     if (processOctet(data[i])) {
       writeResults();
-      active = true;
     }
   }
 });
 
 port.on("close", function (data) {
   console.log('closing serial port');
-  active = false;
 });
 
 port.on('error', function (err) {
@@ -74,7 +72,6 @@ function processOctet(octet) {
 }
 
 function writeResults() {
-  if (!active) return;
   var nowSeconds = Math.floor(Date.now()/1000);
   if (nextTimeStampSeconds == 0) nextTimeStampSeconds = nowSeconds;
   if (nowSeconds >= nextTimeStampSeconds) {
