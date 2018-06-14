@@ -52,6 +52,7 @@ port.on("data", function (data) {
 
 port.on("close", function (data) {
   console.log('closing serial port');
+  process.exit(1);
 });
 
 port.on('error', function (err) {
