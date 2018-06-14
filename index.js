@@ -18,46 +18,49 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 
 var SerialPort = require("serialport");
-var port = process.argv[2];
+var path = process.argv[2];
 var baudrate = 4800;
-var active = false;
 var data = [0x00, 0x000, 0x00, 0x00, 0x00, 0x000, 0x00, 0x00];
 var nextTimeStampSeconds = 0;
 
-// If ctrl+c is hit, free resources and exit.
-// process.on('SIGINT', function() {
-//   lcd.clear();
-//   lcd.close();
-//   process.exit();
-// });
-
-function attemptLogging(port, baudrate) {
-  console.log('attempting to open a serial port')
-  if (!active) {
-    var serialPort = new SerialPort(port, {
-      baudrate: baudrate
-    });
-
-    serialPort.on("data", function (data) {
-      for (var i = 0; i < data.length; i++) {
-        if (processOctet(data[i])) {
-          writeResults();
-          active = true;
-        }
-      }
-    });
-    serialPort.on("close", function (data) {
-      console.log('closing serial port');
-      active = false;
-    });
-
-    serialPort.on('error', function (err) {
-      console.error('Hmm..., error!');
-      console.error(err);
-      // process.exit(1);
-    });
-  }
+if (!path) {
+  console.log("You must specify a serial port location.");
+  process.exit();
 }
+
+// if (!baudrate) {
+//   baudrate = 115200;
+// }
+
+console.log("-----")
+console.log("starting logging session at " + Date())
+console.log("-----")
+
+var port = new SerialPort(path, {
+  baudrate: baudrate
+});
+
+port.on('open', () => console.log('Port open'));
+
+port.on("data", function (data) {
+  for (var i = 0; i < data.length; i++) {
+    if (processOctet(data[i])) {
+      writeResults();
+      active = true;
+    }
+  }
+});
+
+port.on("close", function (data) {
+  console.log('closing serial port');
+  active = false;
+});
+
+port.on('error', function (err) {
+  console.error('Hmm..., error!');
+  console.error(err);
+  process.exit(1);
+});
 
 function processOctet(octet) {
   var tag = (octet >> 4);
@@ -104,26 +107,4 @@ function writeResults() {
     }
     nextTimeStampSeconds++;
   }
-}
-
-if (!port) {
-  console.log("You must specify a serial port location.");
-} else {
-  if (!baudrate) {
-    baudrate = 115200;
-  }
-  console.log("-----")
-  console.log("starting logging session at " + Date())
-  console.log("-----")
-  setInterval(function () {
-    if (!active) {
-      try {
-        attemptLogging(port, baudrate);
-      } catch (e) {
-        // Error means port is not available for listening.
-        console.log('in error handler: ' + e);
-        active = false;
-      }
-    }
-  }, 1000);
 }
