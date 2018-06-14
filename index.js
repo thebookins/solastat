@@ -32,6 +32,7 @@ var nextTimeStampSeconds = 0;
 // });
 
 function attemptLogging(port, baudrate) {
+  console.log('attempting to open a serial port')
   if (!active) {
     var serialPort = new SerialPort(port, {
       baudrate: baudrate
@@ -53,7 +54,7 @@ function attemptLogging(port, baudrate) {
     serialPort.on('error', function (err) {
       console.error('Hmm..., error!');
       console.error(err);
-      process.exit(1);
+      // process.exit(1);
     });
   }
 }
@@ -111,6 +112,9 @@ if (!port) {
   if (!baudrate) {
     baudrate = 115200;
   }
+  console.log("-----")
+  console.log("starting logging session at " + Date())
+  console.log("-----")
   setInterval(function () {
     if (!active) {
       try {
