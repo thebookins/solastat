@@ -14,15 +14,7 @@ socket.on('connect', function(){});
 socket.on('event', function(data){});
 socket.on('disconnect', function(){});
 
-var Client = require('node-rest-client').Client;
-var client = new Client({mimetypes:{
-    json:["application/json","application/json;charset=utf-8"],
-    xml:["application/xml","application/xml;charset=utf-8"]
-}});
-
 var request = require('request');
-
-
 
 var SerialPort = require("serialport");
 var path = process.argv[2];
@@ -115,13 +107,6 @@ function writeResults() {
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
         console.log('body:', body); // Print the HTML for the Google homepage.
       });
-
-      // client.get(remoteUrl + path, function (data, response) {
-      //   // parsed response body as js object
-      //   console.log(data);
-      //   // raw response
-      //   console.log(response);
-      // });
     }
     nextTimeStampSeconds++;
   }
