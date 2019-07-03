@@ -15,7 +15,10 @@ socket.on('event', function(data){});
 socket.on('disconnect', function(){});
 
 var Client = require('node-rest-client').Client;
-var client = new Client();
+var client = new Client({mimetypes:{
+    json:["application/json","application/json;charset=utf-8"],
+    xml:["application/xml","application/xml;charset=utf-8"]
+}});
 
 var SerialPort = require("serialport");
 var path = process.argv[2];
@@ -103,16 +106,12 @@ function writeResults() {
 
       let path = '/input/post?node=emontx&fulljson={"roof":100,"tank":100,"inlet":100}&apikey=8ba2bf7a74855856417501fab1fefa74' // You'll need to put in your API key here from EmonCMS
 
-      try {
-        client.get(remoteUrl + path, function (data, response) {
-          // parsed response body as js object
-          console.log(data);
-          // raw response
-          console.log(response);
-        });
-      } catch (error) {
-        console.log(error)
-      }
+      client.get(remoteUrl + path, function (data, response) {
+        // parsed response body as js object
+        console.log(data);
+        // raw response
+        console.log(response);
+      });
     }
     nextTimeStampSeconds++;
   }
