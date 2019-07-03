@@ -20,6 +20,10 @@ var client = new Client({mimetypes:{
     xml:["application/xml","application/xml;charset=utf-8"]
 }});
 
+var request = require('request');
+
+
+
 var SerialPort = require("serialport");
 var path = process.argv[2];
 var baudrate = 4800;
@@ -106,12 +110,18 @@ function writeResults() {
 
       let path = '/input/post?node=emontx&fulljson={"roof":100,"tank":100,"inlet":100}&apikey=8ba2bf7a74855856417501fab1fefa74' // You'll need to put in your API key here from EmonCMS
 
-      client.get(remoteUrl + path, function (data, response) {
-        // parsed response body as js object
-        console.log(data);
-        // raw response
-        console.log(response);
+      request(remoteUrl + path, function (error, response, body) {
+        console.log('error:', error); // Print the error if one occurred
+        console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        console.log('body:', body); // Print the HTML for the Google homepage.
       });
+
+      // client.get(remoteUrl + path, function (data, response) {
+      //   // parsed response body as js object
+      //   console.log(data);
+      //   // raw response
+      //   console.log(response);
+      // });
     }
     nextTimeStampSeconds++;
   }
