@@ -99,13 +99,13 @@ function writeResults() {
       //     apikey: apiKey,
       //     headers: { "Content-Type": "application/json" }
       // };
-      var data = {
+      var temperatures = {
         roof: data[0] + (data[1] << 4) - 50,
         tank: data[2] + (data[3] << 4) - 50,
         inlet: data[4] + (data[5] << 4) - 50,
       }
 
-      let path = `/input/post?node=emontx&time=${nowSeconds*1000}&fulljson=${JSON.stringify(data)}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
+      let path = `/input/post?node=emontx&time=${nowSeconds*1000}&fulljson=${JSON.stringify(temperatures)}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
 
       request(remoteUrl + path, function (error, response, body) {
         console.log('error:', error); // Print the error if one occurred
