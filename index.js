@@ -105,10 +105,10 @@ function writeResults() {
 
 
       client.get(remoteUrl + path, function (data, response) {
-        // parsed response body as js object
-        console.log(data);
-        // raw response
-        console.log(response);
+        // // parsed response body as js object
+        // console.log(data);
+        // // raw response
+        // console.log(response);
       });
     }
     nextTimeStampSeconds++;
