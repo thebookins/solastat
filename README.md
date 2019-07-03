@@ -2,6 +2,17 @@
 
 Monitoring for Solastat hot water system controller.
 
+## Installation
+```text
+npm install
+sudo npm link
+```
+
+## Calling
+```
+solastat
+```
+
 ## Cron scheduling
 Something like this will keep the job up in the case of errors:
 ```text

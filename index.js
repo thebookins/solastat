@@ -87,6 +87,7 @@ function writeResults() {
     }
 //    state.pump += ((state.solar == 2) || (state.pump == 3));
     socket.emit('state', state);
+    console.log(state);
     if ((nowSeconds % 60) == 0) {
       // should really be averaging state before posting ???
       // or post events to remote url in addition to temperature?
@@ -97,7 +98,7 @@ function writeResults() {
           headers: { "Content-Type": "application/json" }
       };
 
-      client.post(remoteUrl + '/api/entries', args, function (data, response) {
+//      client.post(remoteUrl + '/api/entries', args, function (data, response) {
         // TODO: check if the post was successful?
         // not sure what to do if not
       });
