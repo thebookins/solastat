@@ -104,10 +104,12 @@ function writeResults() {
       let path = '/input/post?node=emontx&fulljson={"roof":100,"tank":100,"inlet":100}&apikey=8ba2bf7a74855856417501fab1fefa74' // You'll need to put in your API key here from EmonCMS
 
 
-     client.get(remoteUrl + path, function (data, response) {
-        // TODO: check if the post was successful?
-        // not sure what to do if not
-     });
+      client.get(remoteUrl + path, function (data, response) {
+        // parsed response body as js object
+        console.log(data);
+        // raw response
+        console.log(response);
+      });
     }
     nextTimeStampSeconds++;
   }
