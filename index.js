@@ -6,6 +6,7 @@
 
 */
 var remoteUrl = process.argv[3]
+var apiKey = process.argv[4]
 
 var socket = require('socket.io-client')(remoteUrl);
 
@@ -94,14 +95,16 @@ function writeResults() {
       // e.g. solar and backup on and off events
       // set content-type header and data as json in args parameter
       var args = {
-          data: state,
+          node: "emontx",
+          fulljson: {"roof": 100,"tank": 100, "inlet": 100},
+          apikey: apiKey,
           headers: { "Content-Type": "application/json" }
       };
 
-//      client.post(remoteUrl + '/api/entries', args, function (data, response) {
+     client.post(remoteUrl + '/input/post', args, function (data, response) {
         // TODO: check if the post was successful?
         // not sure what to do if not
-//      });
+     });
     }
     nextTimeStampSeconds++;
   }
