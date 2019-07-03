@@ -94,14 +94,17 @@ function writeResults() {
       // or post events to remote url in addition to temperature?
       // e.g. solar and backup on and off events
       // set content-type header and data as json in args parameter
-      var args = {
-          node: 1,
-          data: {"roof": 100, "tank": 100, "inlet": 100},
-          apikey: apiKey,
-          headers: { "Content-Type": "application/json" }
-      };
+      // var args = {
+      //     node: 1,
+      //     data: {"roof": 100, "tank": 100, "inlet": 100},
+      //     apikey: apiKey,
+      //     headers: { "Content-Type": "application/json" }
+      // };
 
-     client.post(remoteUrl + '/input/post', args, function (data, response) {
+      let path = '/input/post?node=emontx&fulljson={"roof":${100},"tank":${100},"inlet":${100}}&apikey=8ba2bf7a74855856417501fab1fefa74') // You'll need to put in your API key here from EmonCMS
+
+
+     client.get(remoteUrl + path, function (data, response) {
         // TODO: check if the post was successful?
         // not sure what to do if not
      });
