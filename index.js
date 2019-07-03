@@ -101,7 +101,7 @@ function writeResults() {
 //      client.post(remoteUrl + '/api/entries', args, function (data, response) {
         // TODO: check if the post was successful?
         // not sure what to do if not
-      });
+//      });
     }
     nextTimeStampSeconds++;
   }
