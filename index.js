@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 /*
   Simple example that takes a command line provided serial port destination and routes the output to a file of the same name with .log appended to the port name.
 
@@ -37,7 +36,7 @@ console.log("starting logging session at " + Date())
 console.log("-----")
 
 var port = new SerialPort(path, {
-  baudrate: baudrate
+  baudRate: baudrate
 });
 
 port.on('open', () => console.log('Port open'));
