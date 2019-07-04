@@ -7,6 +7,7 @@
 */
 var remoteUrl = process.argv[3]
 var apiKey = process.argv[4]
+const node = 'hot_water'
 
 var socket = require('socket.io-client')(remoteUrl);
 
@@ -88,7 +89,7 @@ function writeResults() {
     //   }
     if (data[6] != solar) {
       solar = data[6];
-      let path = `/input/post?node=emontx&time=${nowSeconds}&fulljson=${JSON.stringify({solar})}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
+      let path = `/input/post?node=${node}&time=${nowSeconds}&fulljson=${JSON.stringify({solar})}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
       request(remoteUrl + path, function (error, response, body) {
         console.log('error:', error); // Print the error if one occurred
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -97,7 +98,7 @@ function writeResults() {
     }
     if (data[7] != backup) {
       backup = data[7];
-      let path = `/input/post?node=emontx&time=${nowSeconds}&fulljson=${JSON.stringify({backup})}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
+      let path = `/input/post?node=${node}&time=${nowSeconds}&fulljson=${JSON.stringify({backup})}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
       request(remoteUrl + path, function (error, response, body) {
         console.log('error:', error); // Print the error if one occurred
         console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
@@ -125,7 +126,7 @@ function writeResults() {
       inlet: data[4] + (data[5] << 4) - 50,
     }
 
-    let path = `/input/post?node=emontx&time=${nowSeconds}&fulljson=${JSON.stringify(temperatures)}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
+    let path = `/input/post?node=${node}&time=${nowSeconds}&fulljson=${JSON.stringify(temperatures)}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
 
     request(remoteUrl + path, function (error, response, body) {
       console.log('error:', error); // Print the error if one occurred
