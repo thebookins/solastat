@@ -22,6 +22,8 @@ var baudrate = 4800;
 var data = [0x00, 0x000, 0x00, 0x00, 0x00, 0x000, 0x00, 0x00];
 var nextTimeStampSeconds = 0;
 
+var solar, backup;
+
 if (!path) {
   console.log("You must specify a serial port location.");
   process.exit();
@@ -75,19 +77,37 @@ function writeResults() {
   var nowSeconds = Math.floor(Date.now()/1000);
   if (nextTimeStampSeconds == 0) nextTimeStampSeconds = nowSeconds;
   if (nowSeconds >= nextTimeStampSeconds) {
-    var state = {
-      timestamp: new Date(nowSeconds*1000),
-      status: {
-        roof: data[0] + (data[1] << 4) - 50,
-        tank: data[2] + (data[3] << 4) - 50,
-        inlet: data[4] + (data[5] << 4) - 50,
-        solar: data[6],
-        backup: data[7]
+    // var state = {
+    //   timestamp: new Date(nowSeconds*1000),
+    //   status: {
+    //     roof: data[0] + (data[1] << 4) - 50,
+    //     tank: data[2] + (data[3] << 4) - 50,
+    //     inlet: data[4] + (data[5] << 4) - 50,
+    //     solar: data[6],
+    //     backup: data[7]
+    //   }
+      if (data[6] != solar) {
+        solar = data[6];
+        let path = `/input/post?node=emontx&time=${nowSeconds}&fulljson=${JSON.stringify({solar})}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
+        request(remoteUrl + path, function (error, response, body) {
+          console.log('error:', error); // Print the error if one occurred
+          console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+          console.log('body:', body); // Print the HTML for the Google homepage.
+        });
+      }
+      if (data[7] != backup) {
+        backup = data[7];
+        let path = `/input/post?node=emontx&time=${nowSeconds}&fulljson=${JSON.stringify({backup})}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
+        request(remoteUrl + path, function (error, response, body) {
+          console.log('error:', error); // Print the error if one occurred
+          console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+          console.log('body:', body); // Print the HTML for the Google homepage.
+        });
       }
     }
 //    state.pump += ((state.solar == 2) || (state.pump == 3));
-    socket.emit('state', state);
-    console.log(state);
+    // socket.emit('state', state);
+    // console.log(state);
     if ((nowSeconds % 60) == 0) {
       // should really be averaging state before posting ???
       // or post events to remote url in addition to temperature?
