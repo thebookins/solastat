@@ -7,7 +7,7 @@
 */
 var remoteUrl = process.argv[3]
 var apiKey = process.argv[4]
-const node = 'hot-water'
+const node = 'hotWater'
 
 var socket = require('socket.io-client')(remoteUrl);
 
