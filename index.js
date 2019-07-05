@@ -105,6 +105,7 @@ function writeResults() {
         console.log('body:', body); // Print the HTML for the Google homepage.
       });
     }
+    nextTimeStampSeconds++;
   }
 //    state.pump += ((state.solar == 2) || (state.pump == 3));
     // socket.emit('state', state);
@@ -134,5 +135,4 @@ function writeResults() {
       console.log('body:', body); // Print the HTML for the Google homepage.
     });
   }
-  nextTimeStampSeconds++;
 }
