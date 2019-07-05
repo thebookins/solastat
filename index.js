@@ -77,7 +77,7 @@ function processOctet(octet) {
 function writeResults() {
   var nowSeconds = Math.floor(Date.now()/1000);
   if (nextTimeStampSeconds == 0) nextTimeStampSeconds = nowSeconds;
-  if (nowSeconds >= nextTimeStampSeconds) {
+  if (nowSeconds < nextTimeStampSeconds) return;
     // var state = {
     //   timestamp: new Date(nowSeconds*1000),
     //   status: {
@@ -105,7 +105,6 @@ function writeResults() {
         console.log('body:', body); // Print the HTML for the Google homepage.
       });
     }
-  }
 //    state.pump += ((state.solar == 2) || (state.pump == 3));
     // socket.emit('state', state);
     // console.log(state);
