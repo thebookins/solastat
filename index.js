@@ -21,7 +21,8 @@ var SerialPort = require("serialport");
 var path = process.argv[2];
 var baudrate = 4800;
 var data = [0x00, 0x000, 0x00, 0x00, 0x00, 0x000, 0x00, 0x00];
-var nextTimeStampSeconds = 0;
+var nextSecondTimeStamp = 0;
+var nextMinuteTimeStamp = 0;
 
 var solar, backup;
 
@@ -29,10 +30,6 @@ if (!path) {
   console.log("You must specify a serial port location.");
   process.exit();
 }
-
-// if (!baudrate) {
-//   baudrate = 115200;
-// }
 
 console.log("-----")
 console.log("starting logging session at " + Date())
@@ -76,17 +73,8 @@ function processOctet(octet) {
 
 function writeResults() {
   var nowSeconds = Math.floor(Date.now()/1000);
-  if (nextTimeStampSeconds == 0) nextTimeStampSeconds = nowSeconds;
-  if (nowSeconds >= nextTimeStampSeconds) {
-    // var state = {
-    //   timestamp: new Date(nowSeconds*1000),
-    //   status: {
-    //     roof: data[0] + (data[1] << 4) - 50,
-    //     tank: data[2] + (data[3] << 4) - 50,
-    //     inlet: data[4] + (data[5] << 4) - 50,
-    //     solar: data[6],
-    //     backup: data[7]
-    //   }
+  if (nextSecondTimeStamp == 0) nextSecondTimeStamp = nowSeconds;
+  if (nowSeconds >= nextSecondTimeStamp) {
     if (data[6] != solar) {
       solar = data[6];
       let path = `/input/post?node=${node}&time=${nowSeconds}&fulljson=${JSON.stringify({solar})}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
@@ -105,12 +93,11 @@ function writeResults() {
         // console.log('body:', body); // Print the HTML for the Google homepage.
       });
     }
-    nextTimeStampSeconds++;
+    nextSecondTimeStamp++;
   }
-//    state.pump += ((state.solar == 2) || (state.pump == 3));
-    // socket.emit('state', state);
-    // console.log(state);
-  if ((nowSeconds % 60) == 0) {
+  var nowMinutes = Math.floor(nowSeconds/60);
+  if (nextMinuteTimeStamp == 0) nextMinuteTimeStamp = nowMinutes;
+  if (nowMinutes >= nextMinuteTimeStamp) {
     // should really be averaging state before posting ???
     // or post events to remote url in addition to temperature?
     // e.g. solar and backup on and off events
@@ -135,5 +122,6 @@ function writeResults() {
       // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
       // console.log('body:', body); // Print the HTML for the Google homepage.
     });
+    nextMinuteTimeStamp++;
   }
 }
