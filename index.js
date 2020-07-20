@@ -129,7 +129,7 @@ function writeResults() {
 
     let path = `/input/post?node=${node}&time=${nowSeconds}&fulljson=${JSON.stringify(temperatures)}&apikey=${apiKey}` // You'll need to put in your API key here from EmonCMS
 
-    console.log(`logging temperatures: ${temperatures}`);
+    console.log(`logging temperatures: ${JSON.stringify(temperatures)}`);
     request(remoteUrl + path, function (error, response, body) {
       if (error) console.log('error:', error); // Print the error if one occurred
       // console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
