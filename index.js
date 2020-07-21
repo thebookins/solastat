@@ -73,7 +73,7 @@ function processOctet(octet) {
 
 function writeResults() {
   var nowSeconds = Math.floor(Date.now()/1000);
-  if (nextSecondTimeStamp == 0) nextSecondTimeStamp = nowSeconds;
+  if (nextSecondTimeStamp == 0) nextSecondTimeStamp = nowSeconds + 1;
   if (nowSeconds >= nextSecondTimeStamp) {
     if (data[6] != solar) {
       solar = data[6];
@@ -96,7 +96,7 @@ function writeResults() {
     nextSecondTimeStamp++;
   }
   var nowMinutes = Math.floor(nowSeconds/60);
-  if (nextMinuteTimeStamp == 0) nextMinuteTimeStamp = nowMinutes;
+  if (nextMinuteTimeStamp == 0) nextMinuteTimeStamp = nowMinutes + 1;
   if (nowMinutes >= nextMinuteTimeStamp) {
     // should really be averaging state before posting ???
     // or post events to remote url in addition to temperature?
